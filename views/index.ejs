@@ -5,7 +5,45 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  
+  
+  
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+
+  <script>
+  var jsonCustomers = [
+   { "year": 2010, "solo_b_count": 30, "solo_m_count": 50, "dobbio_count": 10 },
+   { "year": 2011, "solo_b_count": 30, "solo_m_count": 50, "dobbio_count": 10 },
+   { "year": 2012, "solo_b_count": 30, "solo_m_count": 50, "dobbio_count": 10 },
+   { "year": 2013, "solo_b_count": 30, "solo_m_count": 50, "dobbio_count": 10 }];
+
+/*
+
+   { "x_axis": 70, "y_axis": 70, "radius": 20, "color" : "purple"},
+   { "x_axis": 110, "y_axis": 100, "radius": 20, "color" : "red"}];
+ */
+ 
+ var svgContainer = d3.select("body").append("svg")
+                                     .attr("width", 1200)
+                                     .attr("height", 1200);
+ 
+var rects = svgContainer.selectAll("rect")
+                          .data(jsonCustomers)
+                          .enter()
+                          .append("rect");
+
+var circleAttributes = rects
+                    .attr("x", function (d) { return (d.year-2000)*5; })
+                	.attr("y", function (d) { return d.solo_b_count; })
+                	.attr("width", function (d) { return 10; })
+                	.attr("height", function (d) { return 10; })
+					.style("fill", function(d) { return d.red; });
+
+  </script>
+
+
+
   </body>
 </html>
