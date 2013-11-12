@@ -5,8 +5,11 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  
+ 
+
+ 
+ <script src="/d3.v3.min.js" charset="utf-8"></script> 
+ <script src="/sankey.js" charset="utf-8"></script>
   
   
     <h1><%= title %></h1>
@@ -14,10 +17,10 @@
 
   <script>
   var jsonCustomers = [
-   { "year": 2010, "solo_b_count": 30, "solo_m_count": 50, "dobbio_count": 10 },
-   { "year": 2011, "solo_b_count": 30, "solo_m_count": 50, "dobbio_count": 10 },
-   { "year": 2012, "solo_b_count": 30, "solo_m_count": 50, "dobbio_count": 10 },
-   { "year": 2013, "solo_b_count": 30, "solo_m_count": 50, "dobbio_count": 10 }];
+   { "year": 2010, "solo_b_count": 30, "solo_m_count": 20, "dobbio_count": 10 },
+   { "year": 2011, "solo_b_count": 10, "solo_m_count": 15, "dobbio_count": 12 },
+   { "year": 2012, "solo_b_count": 40, "solo_m_count": 30, "dobbio_count": 15 },
+   { "year": 2013, "solo_b_count": 50, "solo_m_count": 35, "dobbio_count": 18 }];
 
 /*
 
@@ -36,24 +39,72 @@ var svgContainer = d3.select("body").append("svg")
                                      .attr("width", 1200)
                                      .attr("height", 1200);
 
-var b_group = svgContainer.append("g").attr("id", "b");
+var b_group = svgContainer.append("g")
+					.attr("id", "b")
+					.attr("transform","translate(0,1200) scale(1,-1)");
 
  
-var rects_b = svgContainer.selectAll("rect")
+var rects_b = b_group.selectAll("rect")
                           .data(jsonCustomers)
                           .enter()
                           .append("rect");
 
 
 
-
-
 var circleAttributes = rects_b
-                    .attr("x", function (d) { return (d.year-2000)*5; })
-                	.attr("y", function (d) { return d.solo_b_count; })
-                	.attr("width", function (d) { return 10; })
-                	.attr("height", function (d) { return 10; })
-					.style("fill", function(d) { return d.red; });
+                    .attr("x", function (d) { return (d.year-2009)*55; })
+                	.attr("y", function (d) { return 300 - d.solo_b_count*5/2; })
+                	.attr("width", function (d) { return 50; })
+                	.attr("height", function (d) { return d.solo_b_count*5; })
+					.style("fill", function(d) { return "purple"; });
+
+
+////
+
+var m_group = svgContainer.append("g")
+					.attr("id", "m")
+					.attr("transform","translate(0,1200) scale(1,-1)");
+
+var rects_m = m_group.selectAll("rect")
+                          .data(jsonCustomers)
+                          .enter()
+                          .append("rect");
+
+
+
+var circleAttributes = rects_m
+                    .attr("x", function (d) { return (d.year-2009)*55; })
+                	.attr("y", function (d) { return 700 - d.solo_m_count*5/2; })
+                	.attr("width", function (d) { return 50; })
+                	.attr("height", function (d) { return d.solo_m_count*5; })
+					.style("fill", function(d) { return "red"; });
+
+
+
+
+
+
+////
+
+var d_group = svgContainer.append("g")
+					.attr("id", "d")
+					.attr("transform","translate(0,1200) scale(1,-1)");
+
+var rects_d = d_group.selectAll("rect")
+                          .data(jsonCustomers)
+                          .enter()
+                          .append("rect");
+
+
+
+var circleAttributes = rects_d
+                    .attr("x", function (d) { return (d.year-2009)*55; })
+                	.attr("y", function (d) { return 500 - d.dobbio_count*5/2; })
+                	.attr("width", function (d) { return 50; })
+                	.attr("height", function (d) { return d.dobbio_count*5; })
+					.style("fill", function(d) { return "blue"; });
+
+
 
   </script>
 
