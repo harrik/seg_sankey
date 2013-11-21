@@ -28,9 +28,9 @@
           
           
  var sankeke = d3.sankey()
- .nodeWidth(30)
- .nodePadding(30)
- .size([1200,1200]);
+ .nodeWidth(36)
+ .nodePadding(40)
+ .size([1000,500]);
 
 var path = sankeke.link(); 
  
@@ -59,7 +59,8 @@ var path = sankeke.link();
       .enter().append("path")
       .attr("class", "link")
       .attr("d", path)
-      .style("stroke-width", 10)
+      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+      //.style("stroke-width", 10)
       .sort(function(a, b) { return b.dy - a.dy; });
 
  // .style("stroke-width", function(d) { return Math.max(1, d.dy); })
@@ -69,12 +70,12 @@ var path = sankeke.link();
     .enter().append("g")
       .attr("class", "node")
       .attr("transform", function(d) { 
-          return "translate(" + d.x + "," + d.y + ")"; });
-  /*  .call(d3.behavior.drag()
+          return "translate(" + d.x + "," + d.y + ")"; })
+    .call(d3.behavior.drag()
       .origin(function(d) { return d; })
       .on("dragstart", function() { 
           this.parentNode.appendChild(this); })
-      .on("drag", dragmove)); */
+      .on("drag", dragmove)); 
 
 // add the rectangles for the nodes
   node.append("rect")
@@ -87,6 +88,19 @@ var path = sankeke.link();
     .append("title")
       .text(function(d) { 
          return "keke";}); // return d.name + "\n" + format(d.value); });
+         
+         // the function for moving the nodes
+  function dragmove(d) {
+    d3.select(this).attr("transform", 
+        "translate(" + (
+            d.x = Math.max(0, Math.min(1000 - d.dx, d3.event.x))
+        )
+        + "," + (
+            d.y = Math.max(0, Math.min(500 - d.dy, d3.event.y))
+        ) + ")");
+    sankeke.relayout();
+    link.attr("d", path);
+  }
  
  
   var jsonCustomers = [
